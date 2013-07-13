@@ -11,7 +11,7 @@ class OffersApi < Sinatra::Base
 
   def safe_halt(application, code, &block)
     authentication_hash = AuthenticationHash.new(application.api_key)
-    verify_request_hash! authentication_hash, params[:hash_key]
+    verify_request_hash! authentication_hash
 
     block.call(body = '')
 
@@ -20,8 +20,9 @@ class OffersApi < Sinatra::Base
     halt code, body
   end
 
-  def verify_request_hash!(authentication_hash, hash_key)
-    halt 401, 'ERROR_INVALID_HASHKEY' unless authentication_hash.valid_request?(params, hash_key)
+  def verify_request_hash!(authentication_hash)
+    filtered_params = params.except('hash_key')
+    halt 401, 'ERROR_INVALID_HASHKEY' unless authentication_hash.valid_request?(filtered_params, params[:hash_key])
   end
 
   def set_request_hash!(authentication_hash, body)

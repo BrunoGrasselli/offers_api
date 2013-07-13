@@ -32,6 +32,14 @@ describe OffersApi do
         last_response.status.should eq 200
       end
 
+      it "filters params before checks the hash_key" do
+        AuthenticationHash.unstub(:new)
+        authentication_hash = AuthenticationHash.new(application.api_key)
+        authentication_hash.stub(:valid_request?).with({'appid' => '123'}, valid_hash_key).and_return(true)
+        AuthenticationHash.stub(:new).with(application.api_key).and_return(authentication_hash)
+        get '/offers', hash_key: valid_hash_key, appid: '123'
+      end
+
       it "returns X-Sponsorpay-Response-Signature header" do
         get '/offers', hash_key: valid_hash_key, appid: '123'
         last_response.headers['X-Sponsorpay-Response-Signature'].should eq "a3dcf2c6e2335f93b4aca162349373d783a2bab5"
