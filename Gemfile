@@ -4,6 +4,7 @@ gem 'sinatra'
 gem 'thin'
 gem 'mongoid'
 gem 'offers_sdk', github: 'BrunoGrasselli/offers_sdk'
+gem 'will_paginate_mongoid'
 
 group :test do
   gem 'rspec'

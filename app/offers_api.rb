@@ -4,7 +4,8 @@ class OffersApi < Sinatra::Base
     halt 400, 'ERROR_INVALID_APPID' unless application
 
     safe_halt(application, 200) do
-      offers = Offer.by_types(params[:offer_types])
+      offers = Offer.by_types(params[:offer_types]).paginate(per_page: 5, page: page)
+
       if offers.any?
         presenter = OffersPresenter.new(offers)
         presenter.send("to_#{params[:format]}")
@@ -34,5 +35,9 @@ class OffersApi < Sinatra::Base
 
   def set_request_hash!(auth_hash, body)
     response['X-Sponsorpay-Response-Signature'] = auth_hash.response_hash(body)
+  end
+
+  def page
+    params[:page].to_i == 0 ? 1 : params[:page]
   end
 end

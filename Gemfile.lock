@@ -81,6 +81,10 @@ GEM
     thor (0.18.1)
     tilt (1.4.1)
     tzinfo (0.3.37)
+    will_paginate (3.0.4)
+    will_paginate_mongoid (1.1.0)
+      mongoid (>= 2.4)
+      will_paginate (~> 3.0)
 
 PLATFORMS
   ruby
@@ -96,3 +100,4 @@ DEPENDENCIES
   rspec
   sinatra
   thin
+  will_paginate_mongoid

@@ -92,6 +92,28 @@ describe OffersApi do
         last_response.body.should include 'Test 123'
         last_response.body.should_not include 'Test 456'
       end
+
+      it "paginates offers" do
+        6.times {|i| create(:offer, title: "Test #{i+1}") }
+
+        get '/offers.xml', hash_key: valid_hash_key, appid: '123'
+
+        last_response.body.should include 'Test 1'
+        last_response.body.should include 'Test 2'
+        last_response.body.should include 'Test 3'
+        last_response.body.should include 'Test 4'
+        last_response.body.should include 'Test 5'
+        last_response.body.should_not include 'Test 6'
+
+        get '/offers.xml', hash_key: valid_hash_key, appid: '123', page: 2
+        last_response.body.should include 'Test 6'
+        last_response.body.should_not include 'Test 5'
+      end
+
+      it "sets page as 1 when it is empty" do
+        get '/offers.xml', hash_key: valid_hash_key, appid: '123', page: ''
+        last_response.status.should eq 200
+      end
     end
   end
 end
