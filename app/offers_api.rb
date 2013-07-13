@@ -17,22 +17,22 @@ class OffersApi < Sinatra::Base
   private
 
   def safe_halt(application, code)
-    authentication_hash = OffersSDK::AuthenticationHash.new(application.api_key)
-    verify_request_hash! authentication_hash
+    auth_hash = OffersSDK::AuthenticationHash.new(application.api_key)
+    verify_request_hash! auth_hash
 
     body = yield
 
-    set_request_hash! authentication_hash, body
+    set_request_hash! auth_hash, body
 
     halt code, body
   end
 
-  def verify_request_hash!(authentication_hash)
-    filtered_params = params.reject {|k,v| !['appid', 'uid', 'pub0', 'page'].include? k}
-    halt 401, 'ERROR_INVALID_HASHKEY' unless authentication_hash.valid_request?(filtered_params, params[:hash_key])
+  def verify_request_hash!(auth_hash)
+    filtered_params = params.reject {|k,v| !['appid', 'uid', 'pub0', 'page', 'device_id', 'locale', 'ip', 'offer_types'].include? k}
+    halt 401, 'ERROR_INVALID_HASHKEY' unless auth_hash.valid_request?(filtered_params, params[:hash_key])
   end
 
-  def set_request_hash!(authentication_hash, body)
-    response['X-Sponsorpay-Response-Signature'] = authentication_hash.response_hash(body)
+  def set_request_hash!(auth_hash, body)
+    response['X-Sponsorpay-Response-Signature'] = auth_hash.response_hash(body)
   end
 end

@@ -34,9 +34,9 @@ describe OffersApi do
       let(:valid_hash_key) { '7a2b1604c03d46eec1ecd4a686787b75dd693c4d' }
 
       before do
-        authentication_hash = OffersSDK::AuthenticationHash.new(application.api_key)
-        authentication_hash.stub(:valid_request?).with(anything, valid_hash_key).and_return(true)
-        OffersSDK::AuthenticationHash.stub(:new).with(application.api_key).and_return(authentication_hash)
+        auth_hash = OffersSDK::AuthenticationHash.new(application.api_key)
+        auth_hash.stub(:valid_request?).with(anything, valid_hash_key).and_return(true)
+        OffersSDK::AuthenticationHash.stub(:new).with(application.api_key).and_return(auth_hash)
       end
 
       it "returns status code 200" do
@@ -44,12 +44,19 @@ describe OffersApi do
         last_response.status.should eq 200
       end
 
-      it "filters params before checks the hash_key" do
-        OffersSDK::AuthenticationHash.unstub(:new)
-        authentication_hash = OffersSDK::AuthenticationHash.new(application.api_key)
-        authentication_hash.stub(:valid_request?).with({'appid' => '123', 'pub0' => 'campaign', 'page' => '2', 'uid' => '123'}, valid_hash_key).and_return(true)
-        OffersSDK::AuthenticationHash.stub(:new).with(application.api_key).and_return(authentication_hash)
-        get '/offers.json', hash_key: valid_hash_key, appid: '123', unknown_param: 'aaa', pub0: 'campaign', uid: '123', page: '2'
+      context "filtering params" do
+        let!(:auth_hash) { OffersSDK::AuthenticationHash.new(application.api_key) }
+
+        before do
+          OffersSDK::AuthenticationHash.unstub(:new)
+          OffersSDK::AuthenticationHash.stub(:new).with(application.api_key).and_return(auth_hash)
+        end
+
+        it "filters params before checks the hash_key" do
+          expected_hash = {"appid"=>"123", "pub0"=>"campaign", "uid"=>"123", "page"=>"2", "ip"=>"192.168.0.1", "offer_types"=>"123", "locale"=>"de", "device_id"=>"123"}
+          auth_hash.should_receive(:valid_request?).with(expected_hash, valid_hash_key).and_return(true)
+          get '/offers.json', hash_key: valid_hash_key, appid: '123', unknown_param: 'aaa', pub0: 'campaign', uid: '123', page: '2', ip: '192.168.0.1', offer_types: '123', locale: 'de', device_id: '123'
+        end
       end
 
       it "returns X-Sponsorpay-Response-Signature header" do
