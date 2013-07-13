@@ -13,6 +13,8 @@ GEM
     database_cleaner (1.0.1)
     diff-lcs (1.2.4)
     eventmachine (1.0.3)
+    factory_girl (4.2.0)
+      activesupport (>= 3.0.0)
     ffi (1.9.0)
     formatador (0.2.4)
     guard (1.8.1)
@@ -79,6 +81,7 @@ PLATFORMS
 
 DEPENDENCIES
   database_cleaner
+  factory_girl
   guard
   guard-rspec
   mongoid

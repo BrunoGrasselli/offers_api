@@ -8,12 +8,12 @@ describe OffersApi do
 
     context "when authentication hash is invalid" do
       it "returns status code 401" do
-        get '/offers', hash_key: 'invalid_hash_key', appid: '123'
+        get '/offers.json', hash_key: 'invalid_hash_key', appid: '123'
         last_response.status.should eq 401
       end
 
       it "returns body ERROR_INVALID_HASHKEY" do
-        get '/offers', hash_key: 'invalid_hash_key', appid: '123'
+        get '/offers.json', hash_key: 'invalid_hash_key', appid: '123'
         last_response.body.should eq 'ERROR_INVALID_HASHKEY'
       end
     end
@@ -28,7 +28,7 @@ describe OffersApi do
       end
 
       it "returns status code 200" do
-        get '/offers', hash_key: valid_hash_key, appid: '123'
+        get '/offers.json', hash_key: valid_hash_key, appid: '123'
         last_response.status.should eq 200
       end
 
@@ -37,12 +37,31 @@ describe OffersApi do
         authentication_hash = AuthenticationHash.new(application.api_key)
         authentication_hash.stub(:valid_request?).with({'appid' => '123'}, valid_hash_key).and_return(true)
         AuthenticationHash.stub(:new).with(application.api_key).and_return(authentication_hash)
-        get '/offers', hash_key: valid_hash_key, appid: '123'
+        get '/offers.json', hash_key: valid_hash_key, appid: '123'
       end
 
       it "returns X-Sponsorpay-Response-Signature header" do
-        get '/offers', hash_key: valid_hash_key, appid: '123'
+        get '/offers.json', hash_key: valid_hash_key, appid: '123'
         last_response.headers['X-Sponsorpay-Response-Signature'].should eq "a3dcf2c6e2335f93b4aca162349373d783a2bab5"
+      end
+
+      it "returns an empty response body if there aren't offers" do
+        get '/offers.json', hash_key: valid_hash_key, appid: '123'
+        last_response.body.should be_empty
+      end
+
+      it "returns offers as json when content type is json" do
+        create :offer
+        get '/offers.json', hash_key: valid_hash_key, appid: '123'
+        response = JSON.parse(last_response.body)
+        response['offers'].should have(1).item
+      end
+
+      it "returns offers as xml when content type is xml" do
+        create :offer
+        get '/offers.xml', hash_key: valid_hash_key, appid: '123'
+        response = Hash.from_xml(last_response.body)
+        response['response']['offers'].should have(1).item
       end
     end
   end

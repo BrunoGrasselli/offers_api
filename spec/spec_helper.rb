@@ -6,6 +6,7 @@ Dir["./spec/support/**/*.rb"].each { |file| require file }
 
 RSpec.configure do |config|
   config.include Rack::Test::Methods
+  config.include FactoryGirl::Syntax::Methods
 
   config.before :suite do
     DatabaseCleaner.clean_with :truncation
