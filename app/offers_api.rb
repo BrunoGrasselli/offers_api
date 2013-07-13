@@ -17,7 +17,7 @@ class OffersApi < Sinatra::Base
   private
 
   def safe_halt(application, code)
-    authentication_hash = AuthenticationHash.new(application.api_key)
+    authentication_hash = OffersSDK::AuthenticationHash.new(application.api_key)
     verify_request_hash! authentication_hash
 
     body = yield

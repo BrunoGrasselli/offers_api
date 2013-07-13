@@ -34,9 +34,9 @@ describe OffersApi do
       let(:valid_hash_key) { '7a2b1604c03d46eec1ecd4a686787b75dd693c4d' }
 
       before do
-        authentication_hash = AuthenticationHash.new(application.api_key)
+        authentication_hash = OffersSDK::AuthenticationHash.new(application.api_key)
         authentication_hash.stub(:valid_request?).with(anything, valid_hash_key).and_return(true)
-        AuthenticationHash.stub(:new).with(application.api_key).and_return(authentication_hash)
+        OffersSDK::AuthenticationHash.stub(:new).with(application.api_key).and_return(authentication_hash)
       end
 
       it "returns status code 200" do
@@ -45,10 +45,10 @@ describe OffersApi do
       end
 
       it "filters params before checks the hash_key" do
-        AuthenticationHash.unstub(:new)
-        authentication_hash = AuthenticationHash.new(application.api_key)
+        OffersSDK::AuthenticationHash.unstub(:new)
+        authentication_hash = OffersSDK::AuthenticationHash.new(application.api_key)
         authentication_hash.stub(:valid_request?).with({'appid' => '123'}, valid_hash_key).and_return(true)
-        AuthenticationHash.stub(:new).with(application.api_key).and_return(authentication_hash)
+        OffersSDK::AuthenticationHash.stub(:new).with(application.api_key).and_return(authentication_hash)
         get '/offers.json', hash_key: valid_hash_key, appid: '123'
       end
 
