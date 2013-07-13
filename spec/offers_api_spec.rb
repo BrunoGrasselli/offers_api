@@ -84,7 +84,13 @@ describe OffersApi do
       end
 
       it "filters offers by type" do
-        pending
+        create :offer, title: 'Test 123', offer_types: [OfferType.new(external_id: 100)]
+        create :offer, title: 'Test 456', offer_types: [OfferType.new(external_id: 101)]
+
+        get '/offers.xml', hash_key: valid_hash_key, appid: '123', offer_types: '100'
+
+        last_response.body.should include 'Test 123'
+        last_response.body.should_not include 'Test 456'
       end
     end
   end

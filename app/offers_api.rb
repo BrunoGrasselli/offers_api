@@ -4,7 +4,7 @@ class OffersApi < Sinatra::Base
     halt 400, 'ERROR_INVALID_APPID' unless application
 
     safe_halt(application, 200) do
-      offers = Offer.all
+      offers = Offer.by_types(params[:offer_types])
       if offers.any?
         presenter = OffersPresenter.new(offers)
         presenter.send("to_#{params[:format]}")

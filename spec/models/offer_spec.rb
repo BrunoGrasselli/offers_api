@@ -50,5 +50,25 @@ describe Offer do
       offer.teaser.should eq 'an action'
     end
   end
+
+  describe ".by_types" do
+    let!(:offer_1) { create(:offer, offer_types: [OfferType.new(external_id:  100)]) }
+    let!(:offer_2) { create(:offer, offer_types: [OfferType.new(external_id:  100)]) }
+    let!(:offer_3) { create(:offer, offer_types: [OfferType.new(external_id:  102)]) }
+    let!(:offer_4) { create(:offer, offer_types: []) }
+
+    it "filters by one offer type" do
+      described_class.by_types('100').to_a.should eq [offer_1, offer_2]
+    end
+
+    it "filters by more than one offer types" do
+      described_class.by_types('100,102').to_a.should eq [offer_1, offer_2, offer_3]
+    end
+
+    it "returns all offers if no type was given" do
+      described_class.by_types('').to_a.should eq [offer_1, offer_2, offer_3, offer_4]
+      described_class.by_types(nil).to_a.should eq [offer_1, offer_2, offer_3, offer_4]
+    end
+  end
 end
 
