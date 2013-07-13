@@ -1,7 +1,6 @@
 /log/*.log
 /tmp
 /config/mongoid.yml
-/config/authorization.yml
 .DS_Store
 .bundle
 *sw[op]
