@@ -11,6 +11,14 @@ class AuthenticationHash
     hexdigest "#{body}#{api_key}"
   end
 
+  def valid_request_hash?(parameters, hash)
+    request_hash(parameters) == hash
+  end
+
+  def valid_response_hash?(body, hash)
+    response_hash(body) == hash
+  end
+
   private
 
   def api_key
