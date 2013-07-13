@@ -21,7 +21,12 @@ class OffersPresenter
         link: offer.link,
         teaser: offer.teaser,
         required_action: offer.required_action,
-        title: offer.title
+        title: offer.title,
+        payout: offer.payout,
+        thumbnail: {
+          lowres: offer.thumbnail['lowres'],
+          hires: offer.thumbnail['hires']
+        }
       }
     end
   end

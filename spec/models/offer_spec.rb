@@ -15,10 +15,20 @@ describe Offer do
     offer.errors[:link].should_not be_empty
   end
 
+  it "validates presence of payout" do
+    offer.payout = nil
+    offer.valid?
+    offer.errors[:payout].should_not be_empty
+  end
+
   it "validates presence of required_action" do
     offer.required_action = nil
     offer.valid?
     offer.errors[:required_action].should_not be_empty
+  end
+
+  it "has default value for thumbnail field" do
+    offer.thumbnail.should eq({})
   end
 
   describe "#teaser" do

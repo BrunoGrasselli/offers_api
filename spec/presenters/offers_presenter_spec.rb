@@ -4,14 +4,24 @@ describe OffersPresenter do
   let!(:offer_1) { Offer.create!({
     title: 'My first offer',
     link: 'http://link.com/offer1',
-    required_action: 'action 1'
+    payout: 10,
+    required_action: 'action 1',
+    thumbnail: {
+      lowres: 'http://link1.example.com/lowres.png',
+      hires: 'http://link1.example.com/hires.png'
+    }
   }) }
 
   let!(:offer_2) { Offer.create!({
     title: 'My second offer',
     link: 'http://link.com/offer2',
+    payout: 20,
     required_action: 'action 2',
-    description: 'some description'
+    description: 'some description',
+    thumbnail: {
+      lowres: 'http://link2.example.com/lowres.png',
+      hires: 'http://link2.example.com/hires.png'
+    }
   }) }
 
   let(:presenter) { described_class.new Offer.all }
@@ -42,6 +52,21 @@ describe OffersPresenter do
       it "has title" do
         offers[0][:title].should eq 'My first offer'
         offers[1][:title].should eq 'My second offer'
+      end
+
+      it "has payout" do
+        offers[0][:payout].should eq 10
+        offers[1][:payout].should eq 20
+      end
+
+      it "has low resolution thumbnail" do
+        offers[0][:thumbnail][:lowres].should eq 'http://link1.example.com/lowres.png'
+        offers[1][:thumbnail][:lowres].should eq 'http://link2.example.com/lowres.png'
+      end
+
+      it "has high resolution thumbnail" do
+        offers[0][:thumbnail][:hires].should eq 'http://link1.example.com/hires.png'
+        offers[1][:thumbnail][:hires].should eq 'http://link2.example.com/hires.png'
       end
     end
   end
