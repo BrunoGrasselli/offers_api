@@ -31,6 +31,11 @@ describe OffersApi do
         get '/offers', hash_key: valid_hash_key, appid: '123'
         last_response.status.should eq 200
       end
+
+      it "returns X-Sponsorpay-Response-Signature header" do
+        get '/offers', hash_key: valid_hash_key, appid: '123'
+        last_response.headers['X-Sponsorpay-Response-Signature'].should eq "a3dcf2c6e2335f93b4aca162349373d783a2bab5"
+      end
     end
   end
 end
