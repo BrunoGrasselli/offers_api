@@ -1,0 +1,2 @@
+class OffersApi
+end
