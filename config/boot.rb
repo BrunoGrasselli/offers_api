@@ -3,4 +3,6 @@ require 'bundler'
 Bundler.setup
 Bundler.require :default, ENV['RACK_ENV']
 
-require './app/offers_api'
+["../app", "../app/models"].each do |dir|
+  Dir[File.expand_path("../#{dir}/*.rb", __FILE__)].each { |file| require file }
+end
