@@ -45,5 +45,33 @@ describe OffersPresenter do
       end
     end
   end
+
+  describe "#to_json" do
+    before do
+      presenter.stub(:to_hash).and_return({offers: [{title: 'test'}]})
+    end
+
+    it "returns a json with the same content of the to_hash" do
+      presenter.to_json.should eq '{"offers":[{"title":"test"}]}'
+    end
+  end
+
+  describe "#to_xml" do
+    before do
+      presenter.stub(:to_hash).and_return({offers: [{title: 'test'}]})
+    end
+
+    it "returns an xml with the same content of the to_hash" do
+      presenter.to_xml.should eq %{<?xml version="1.0" encoding="UTF-8"?>
+<response>
+  <offers type="array">
+    <offer>
+      <title>test</title>
+    </offer>
+  </offers>
+</response>
+}
+    end
+  end
 end
 

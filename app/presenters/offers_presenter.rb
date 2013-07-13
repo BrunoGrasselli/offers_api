@@ -9,6 +9,10 @@ class OffersPresenter
     }
   end
 
+  def to_xml
+    to_hash.to_xml(root: 'response')
+  end
+
   private
 
   def offers_list
