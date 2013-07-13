@@ -31,6 +31,11 @@ describe Offer do
     offer.thumbnail.should eq({})
   end
 
+  it "embeds offer types" do
+    offer.offer_types.build external_id: 100
+    offer.offer_types.first.readable.should eq 'Mobile'
+  end
+
   describe "#teaser" do
     it "returns description when it is present" do
       offer.attributes = {description: 'some description', required_action: 'an action'}

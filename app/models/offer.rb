@@ -8,6 +8,8 @@ class Offer
   field :payout,           type: Integer
   field :thumbnail,        type: Hash, default: {}
 
+  embeds_many :offer_types
+
   validates_presence_of :title, :link, :required_action, :payout
 
   def teaser

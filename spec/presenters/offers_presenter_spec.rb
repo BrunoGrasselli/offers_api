@@ -9,7 +9,8 @@ describe OffersPresenter do
     thumbnail: {
       lowres: 'http://link1.example.com/lowres.png',
       hires: 'http://link1.example.com/hires.png'
-    }
+    },
+    offer_types: [OfferType.new(external_id: 100)]
   }) }
 
   let!(:offer_2) { Offer.create!({
@@ -21,7 +22,8 @@ describe OffersPresenter do
     thumbnail: {
       lowres: 'http://link2.example.com/lowres.png',
       hires: 'http://link2.example.com/hires.png'
-    }
+    },
+    offer_types: [OfferType.new(external_id: 101)]
   }) }
 
   let(:presenter) { described_class.new Offer.all }
@@ -67,6 +69,14 @@ describe OffersPresenter do
       it "has high resolution thumbnail" do
         offers[0][:thumbnail][:hires].should eq 'http://link1.example.com/hires.png'
         offers[1][:thumbnail][:hires].should eq 'http://link2.example.com/hires.png'
+      end
+
+      it "has offer types" do
+        offers[0][:offer_types][0][:offer_type_id].should eq 100
+        offers[1][:offer_types][0][:offer_type_id].should eq 101
+
+        offers[0][:offer_types][0][:readable].should eq 'Mobile'
+        offers[1][:offer_types][0][:readable].should eq 'Download'
       end
     end
   end

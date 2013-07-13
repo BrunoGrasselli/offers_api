@@ -26,7 +26,17 @@ class OffersPresenter
         thumbnail: {
           lowres: offer.thumbnail['lowres'],
           hires: offer.thumbnail['hires']
-        }
+        },
+        offer_types: offer_types(offer)
+      }
+    end
+  end
+
+  def offer_types(offer)
+    offer.offer_types.map do |type|
+      {
+        offer_type_id: type.external_id,
+        readable: type.readable
       }
     end
   end

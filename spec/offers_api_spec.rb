@@ -82,6 +82,10 @@ describe OffersApi do
         response = Hash.from_xml(last_response.body)
         response['response']['offers'].should have(1).item
       end
+
+      it "filters offers by type" do
+        pending
+      end
     end
   end
 end
