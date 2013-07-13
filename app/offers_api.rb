@@ -1,6 +1,7 @@
 class OffersApi < Sinatra::Base
   get "/offers.:format" do
     application = Application.where(external_id: params[:appid]).first
+    halt 400, 'ERROR_INVALID_APPID' unless application
 
     safe_halt(application, 200) do
       offers = Offer.all

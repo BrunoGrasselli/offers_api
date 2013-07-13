@@ -18,6 +18,18 @@ describe OffersApi do
       end
     end
 
+    context "when app id is invalid" do
+      it "returns status code 400" do
+        get '/offers.json', hash_key: 'hash_key', appid: '456'
+        last_response.status.should eq 400
+      end
+
+      it "returns body ERROR_INVALID_APPID" do
+        get '/offers.json', hash_key: 'hash_key', appid: '456'
+        last_response.body.should eq 'ERROR_INVALID_APPID'
+      end
+    end
+
     context "when authentication hash is valid" do
       let(:valid_hash_key) { '7a2b1604c03d46eec1ecd4a686787b75dd693c4d' }
 
