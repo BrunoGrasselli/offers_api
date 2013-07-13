@@ -47,9 +47,9 @@ describe OffersApi do
       it "filters params before checks the hash_key" do
         OffersSDK::AuthenticationHash.unstub(:new)
         authentication_hash = OffersSDK::AuthenticationHash.new(application.api_key)
-        authentication_hash.stub(:valid_request?).with({'appid' => '123'}, valid_hash_key).and_return(true)
+        authentication_hash.stub(:valid_request?).with({'appid' => '123', 'pub0' => 'campaign', 'page' => '2', 'uid' => '123'}, valid_hash_key).and_return(true)
         OffersSDK::AuthenticationHash.stub(:new).with(application.api_key).and_return(authentication_hash)
-        get '/offers.json', hash_key: valid_hash_key, appid: '123'
+        get '/offers.json', hash_key: valid_hash_key, appid: '123', unknown_param: 'aaa', pub0: 'campaign', uid: '123', page: '2'
       end
 
       it "returns X-Sponsorpay-Response-Signature header" do

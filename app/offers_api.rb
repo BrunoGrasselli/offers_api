@@ -28,7 +28,7 @@ class OffersApi < Sinatra::Base
   end
 
   def verify_request_hash!(authentication_hash)
-    filtered_params = params.reject {|k,v| !['appid'].include? k}
+    filtered_params = params.reject {|k,v| !['appid', 'uid', 'pub0', 'page'].include? k}
     halt 401, 'ERROR_INVALID_HASHKEY' unless authentication_hash.valid_request?(filtered_params, params[:hash_key])
   end
 
