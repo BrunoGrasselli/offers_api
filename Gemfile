@@ -9,4 +9,5 @@ group :test do
   gem 'guard'
   gem 'guard-rspec'
   gem 'rack-test'
+  gem 'database_cleaner'
 end

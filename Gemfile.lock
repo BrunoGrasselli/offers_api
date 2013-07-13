@@ -10,6 +10,7 @@ GEM
     builder (3.0.4)
     coderay (1.0.9)
     daemons (1.1.9)
+    database_cleaner (1.0.1)
     diff-lcs (1.2.4)
     eventmachine (1.0.3)
     ffi (1.9.0)
@@ -77,6 +78,7 @@ PLATFORMS
   ruby
 
 DEPENDENCIES
+  database_cleaner
   guard
   guard-rspec
   mongoid
