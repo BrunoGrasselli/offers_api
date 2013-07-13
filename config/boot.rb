@@ -1,5 +1,7 @@
 require 'bundler'
 
+ENV['RACK_ENV'] ||= 'development'
+
 Bundler.setup
 Bundler.require :default, ENV['RACK_ENV']
 
