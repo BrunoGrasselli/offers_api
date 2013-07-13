@@ -23,7 +23,7 @@ describe OffersApi do
 
       before do
         authentication_hash = AuthenticationHash.new(application.api_key)
-        authentication_hash.stub(:valid_request_hash?).with(anything, valid_hash_key).and_return(true)
+        authentication_hash.stub(:valid_request?).with(anything, valid_hash_key).and_return(true)
         AuthenticationHash.stub(:new).with(application.api_key).and_return(authentication_hash)
       end
 

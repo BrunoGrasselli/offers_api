@@ -41,16 +41,16 @@ describe AuthenticationHash do
     end
   end
 
-  describe "#valid_request_hash?" do
+  describe "#valid_request?" do
     let(:authentication_hash) { described_class.new 'e95a21621a1865bcbae3bee89c4d4f84' }
 
     it "returns false when request hash is invalid" do
-      authentication_hash.valid_request_hash?(parameters, '7a2b1604c03d46eec1ecd4a686787b75dd693c4d')
+      authentication_hash.valid_request?(parameters, '7a2b1604c03d46eec1ecd4a686787b75dd693c4d')
                          .should eq true
     end
 
     it "returns true when request hash is valid" do
-      authentication_hash.valid_request_hash?(parameters, '99999999999999999999999999999999')
+      authentication_hash.valid_request?(parameters, '99999999999999999999999999999999')
                          .should eq false
     end
   end
@@ -59,12 +59,12 @@ describe AuthenticationHash do
     let(:authentication_hash) { described_class.new 'e95a21621a1865bcbae3bee89c4d4f84' }
 
     it "returns false when response hash is invalid" do
-      authentication_hash.valid_response_hash?('body message', 'ede88b1b612ec07f1282f6dd69f09b53a1a904e3')
+      authentication_hash.valid_response?('body message', 'ede88b1b612ec07f1282f6dd69f09b53a1a904e3')
                          .should eq true
     end
 
     it "returns true when response hash is valid" do
-      authentication_hash.valid_response_hash?('body message', '9999999999999999999999999999999999999999')
+      authentication_hash.valid_response?('body message', '9999999999999999999999999999999999999999')
                          .should eq false
     end
   end
