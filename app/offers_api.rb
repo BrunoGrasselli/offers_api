@@ -2,14 +2,14 @@ class OffersApi < Sinatra::Base
   get "/offers" do
     application = Application.where(external_id: params[:appid]).first
 
-    safe_halt(application) do |body|
+    safe_halt(application, 200) do |body|
       body = ''
     end
   end
 
   private
 
-  def safe_halt(application, &block)
+  def safe_halt(application, code, &block)
     authentication_hash = AuthenticationHash.new(application.api_key)
     verify_request_hash! authentication_hash, params[:hash_key]
 
@@ -17,7 +17,7 @@ class OffersApi < Sinatra::Base
 
     set_request_hash! authentication_hash, body
 
-    halt 200, body
+    halt code, body
   end
 
   def verify_request_hash!(authentication_hash, hash_key)
