@@ -1,8 +1,6 @@
 require 'spec_helper'
 
 describe AuthenticationHash do
-  let(:authentication_hash) { described_class.new }
-
   describe "#request_hash" do
     let(:parameters) { {
       appid: '157',
@@ -17,25 +15,29 @@ describe AuthenticationHash do
     } }
 
     it "generates request hash for key 'e95a21621a1865bcbae3bee89c4d4f84'" do
-      authentication_hash.request_hash(parameters, 'e95a21621a1865bcbae3bee89c4d4f84')
-                         .should eq '7a2b1604c03d46eec1ecd4a686787b75dd693c4d'
+      described_class.new('e95a21621a1865bcbae3bee89c4d4f84')
+                     .request_hash(parameters)
+                     .should eq '7a2b1604c03d46eec1ecd4a686787b75dd693c4d'
     end
 
     it "generates request hash for key '99999999999999999999999999999999'" do
-      authentication_hash.request_hash(parameters, '99999999999999999999999999999999')
-                         .should eq '823fee17e1d84aa7c7030b4489a72ab73df84d9e'
+      described_class.new('99999999999999999999999999999999')
+                     .request_hash(parameters)
+                     .should eq '823fee17e1d84aa7c7030b4489a72ab73df84d9e'
     end
   end
 
   describe "#response_hash" do
     it "generates response hash for key 'e95a21621a1865bcbae3bee89c4d4f84'" do
-      authentication_hash.response_hash('body message', 'e95a21621a1865bcbae3bee89c4d4f84')
-                         .should eq 'ede88b1b612ec07f1282f6dd69f09b53a1a904e3'
+      described_class.new('e95a21621a1865bcbae3bee89c4d4f84')
+                     .response_hash('body message')
+                     .should eq 'ede88b1b612ec07f1282f6dd69f09b53a1a904e3'
     end
 
     it "generates response hash for key '99999999999999999999999999999999'" do
-      authentication_hash.response_hash('another message', '99999999999999999999999999999999')
-                         .should eq 'c2e20d6bec2b4865ff1be5bf2b52cc8524951adf'
+      described_class.new('99999999999999999999999999999999')
+                     .response_hash('another message')
+                     .should eq 'c2e20d6bec2b4865ff1be5bf2b52cc8524951adf'
     end
   end
 end
