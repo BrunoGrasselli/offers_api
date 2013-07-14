@@ -4,7 +4,7 @@ class OffersApi < Sinatra::Base
     halt 400, 'ERROR_INVALID_APPID' unless application
 
     safe_halt(application, 200) do
-      offers = Offer.by_types(params[:offer_types]).paginate(per_page: 5, page: page)
+      offers = Offer.by_types(params[:offer_types]).paginate(per_page: per_page, page: page)
 
       if offers.any?
         presenter = OffersPresenter.new(offers)
@@ -39,5 +39,9 @@ class OffersApi < Sinatra::Base
 
   def page
     params[:page].to_i == 0 ? 1 : params[:page]
+  end
+
+  def per_page
+    Offer.per_page
   end
 end

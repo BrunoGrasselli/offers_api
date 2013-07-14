@@ -22,6 +22,10 @@ class Offer
     end
   end
 
+  def self.per_page
+    5
+  end
+
   def teaser
     description.present? ? description : required_action
   end

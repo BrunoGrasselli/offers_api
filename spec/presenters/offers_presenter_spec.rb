@@ -29,6 +29,14 @@ describe OffersPresenter do
   let(:presenter) { described_class.new Offer.all }
 
   describe "#to_hash" do
+    it "has the quantity of offers" do
+      presenter.to_hash[:count].should eq 2
+    end
+
+    it "has the quantity of pages" do
+      presenter.to_hash[:pages].should eq 1
+    end
+
     context "offers" do
       let(:offers) { presenter.to_hash[:offers] }
 

@@ -5,6 +5,8 @@ class OffersPresenter
 
   def to_hash
     {
+      count: offers.size,
+      pages: pages,
       offers: offers_list
     }
   end
@@ -43,5 +45,9 @@ class OffersPresenter
 
   def offers
     @offers
+  end
+
+  def pages
+    (offers.size.to_f / Offer.per_page).ceil
   end
 end
