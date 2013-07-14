@@ -110,7 +110,7 @@ describe OffersApi do
         last_response.body.should_not include 'Test 5'
       end
 
-      it "sets page as 1 when it is empty" do
+      it "sets page as 1 when page param is empty" do
         get '/offers.xml', hash_key: valid_hash_key, appid: '123', page: ''
         last_response.status.should eq 200
       end

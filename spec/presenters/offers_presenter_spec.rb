@@ -40,7 +40,7 @@ describe OffersPresenter do
     context "offers" do
       let(:offers) { presenter.to_hash[:offers] }
 
-      it "has 2 offers" do
+      it "has the right quantity of offers" do
         offers.should have(2).offers
       end
 
